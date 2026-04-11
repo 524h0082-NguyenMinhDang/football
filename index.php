@@ -25,7 +25,7 @@ require_once __DIR__ . '/config/config.php';
                     <div class="card h-100 shadow-sm border-0">
                         <div class="card-body text-center p-4">
                             <h2 class="h4 mb-3">Khách</h2>
-                            <p class="text-muted small mb-4">Xem lịch thi đấu, CLB, cầu thủ — không cần đăng nhập.</p>
+                            <p class="text-muted small mb-4">Xem lịch thi đấu, bảng xếp hạng, cầu thủ — không cần đăng nhập.</p>
                             <a href="guest/index.php" class="btn btn-outline-success btn-lg w-100">Vào xem</a>
                         </div>
                     </div>

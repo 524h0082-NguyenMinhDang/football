@@ -145,6 +145,9 @@ require_once dirname(__DIR__) . '/includes/header.php';
         <label class="form-label" for="away_score">Bàn đội khách</label>
         <input type="number" name="away_score" id="away_score" class="form-control" min="0" value="<?= $match && $match['AwayScore'] !== null ? (int) $match['AwayScore'] : ($_POST['away_score'] ?? '') ?>">
     </div>
+    <div class="col-12">
+        <p class="form-text mb-0">Khi nhập đủ tỷ số hai đội, trận được tính vào <a href="standings.php">bảng xếp hạng</a> (điểm, hiệu số, v.v.).</p>
+    </div>
     <div class="col-md-4">
         <label class="form-label" for="status">Trạng thái</label>
         <input type="text" name="status" id="status" class="form-control" value="<?= htmlspecialchars((string) ($match['Status'] ?? $_POST['status'] ?? 'Scheduled'), ENT_QUOTES, 'UTF-8') ?>" placeholder="Scheduled / Live / Finished">

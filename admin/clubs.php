@@ -19,7 +19,14 @@ require_once dirname(__DIR__) . '/includes/header.php';
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h3 mb-0">Câu lạc bộ</h1>
-    <a href="club_form.php" class="btn btn-success">+ Thêm CLB</a>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="standings.php" class="btn btn-outline-success">Bảng xếp hạng</a>
+        <a href="club_form.php" class="btn btn-success">+ Thêm CLB</a>
+    </div>
+</div>
+
+<div class="alert alert-light border mb-4 small">
+    Điểm trên <a href="standings.php">bảng xếp hạng</a> được tính tự động từ các trận đã có tỷ số. Cập nhật tỷ số tại <a href="matches.php">Trận đấu</a>.
 </div>
 
 <div class="table-responsive">

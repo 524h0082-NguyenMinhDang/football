@@ -8,6 +8,7 @@ require_once dirname(__DIR__) . '/includes/auth.php';
 $pageTitle = 'Trận đấu';
 $isGuestArea = true;
 $assetsPrefix = '../';
+$guestNavActive = 'matches';
 
 $pdo = getPdo();
 $sql = <<<SQL

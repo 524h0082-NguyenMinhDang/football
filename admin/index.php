@@ -22,7 +22,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
 <h1 class="h3 mb-4">Xin chào, <?= htmlspecialchars((string) $_SESSION['admin_username'], ENT_QUOTES, 'UTF-8') ?></h1>
 
 <div class="row g-3 mb-4">
-    <div class="col-md-4">
+    <div class="col-md-6 col-xl-3">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
                 <div class="text-muted small">Trận đấu</div>
@@ -31,7 +31,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6 col-xl-3">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
                 <div class="text-muted small">Câu lạc bộ</div>
@@ -40,12 +40,21 @@ require_once dirname(__DIR__) . '/includes/header.php';
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6 col-xl-3">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
                 <div class="text-muted small">Cầu thủ</div>
                 <div class="fs-2 fw-bold text-success"><?= $countPlayers ?></div>
                 <a href="players.php" class="stretched-link text-decoration-none small">Quản lý →</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100 border-start border-success border-4">
+            <div class="card-body">
+                <div class="text-muted small">Bảng xếp hạng</div>
+                <div class="fs-6 fw-semibold text-success mb-1">Theo tỷ số</div>
+                <a href="standings.php" class="stretched-link text-decoration-none small">Xem bảng →</a>
             </div>
         </div>
     </div>

@@ -8,6 +8,8 @@ $pageTitle = $pageTitle ?? 'Giải bóng đá';
 $isGuestArea = $isGuestArea ?? false;
 $isAdminArea = $isAdminArea ?? false;
 $assetsPrefix = $assetsPrefix ?? '';
+$bodyClass = $bodyClass ?? 'bg-light';
+$guestNavActive = $guestNavActive ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -18,7 +20,7 @@ $assetsPrefix = $assetsPrefix ?? '';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= htmlspecialchars($assetsPrefix . 'assets/css/style.css', ENT_QUOTES, 'UTF-8') ?>">
 </head>
-<body class="bg-light">
+<body class="<?= htmlspecialchars($bodyClass, ENT_QUOTES, 'UTF-8') ?>">
 <nav class="navbar navbar-expand-lg navbar-dark bg-success mb-4">
     <div class="container">
         <a class="navbar-brand fw-bold" href="<?= ($isAdminArea && isAdminLoggedIn()) ? 'index.php' : ($isAdminArea ? '../index.php' : $assetsPrefix . 'index.php') ?>">Giải bóng đá</a>
@@ -28,12 +30,13 @@ $assetsPrefix = $assetsPrefix ?? '';
         <div class="collapse navbar-collapse" id="navMain">
             <ul class="navbar-nav me-auto">
                 <?php if ($isGuestArea): ?>
-                    <li class="nav-item"><a class="nav-link" href="index.php">Trận đấu</a></li>
-                    <li class="nav-item"><a class="nav-link" href="clubs.php">Câu lạc bộ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="players.php">Cầu thủ</a></li>
+                    <li class="nav-item"><a class="nav-link<?= $guestNavActive === 'matches' ? ' active' : '' ?>" href="index.php">Trận đấu</a></li>
+                    <li class="nav-item"><a class="nav-link<?= $guestNavActive === 'standings' ? ' active' : '' ?>" href="clubs.php">Bảng xếp hạng</a></li>
+                    <li class="nav-item"><a class="nav-link<?= $guestNavActive === 'players' ? ' active' : '' ?>" href="players.php">Cầu thủ</a></li>
                 <?php elseif ($isAdminArea && isAdminLoggedIn()): ?>
                     <li class="nav-item"><a class="nav-link" href="index.php">Bảng điều khiển</a></li>
                     <li class="nav-item"><a class="nav-link" href="matches.php">Trận đấu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="standings.php">Bảng xếp hạng</a></li>
                     <li class="nav-item"><a class="nav-link" href="clubs.php">CLB</a></li>
                     <li class="nav-item"><a class="nav-link" href="players.php">Cầu thủ</a></li>
                     <li class="nav-item"><a class="nav-link" href="lineups.php">Đội hình trận</a></li>

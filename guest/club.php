@@ -27,6 +27,7 @@ $playerRows = $players->fetchAll();
 $pageTitle = htmlspecialchars((string) $club['Name'], ENT_QUOTES, 'UTF-8');
 $isGuestArea = true;
 $assetsPrefix = '../';
+$guestNavActive = 'standings';
 
 require_once dirname(__DIR__) . '/includes/header.php';
 ?>
@@ -64,6 +65,6 @@ require_once dirname(__DIR__) . '/includes/header.php';
     <p class="text-muted">Chưa có cầu thủ.</p>
 <?php endif; ?>
 
-<a href="clubs.php" class="btn btn-outline-secondary mt-3">← Danh sách CLB</a>
+<a href="clubs.php" class="btn btn-outline-secondary mt-3">← Bảng xếp hạng</a>
 
 <?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>

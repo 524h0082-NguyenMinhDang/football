@@ -17,3 +17,8 @@ define('DB_CHARSET', 'utf8mb4');
 
 define('BASE_PATH', dirname(__DIR__));
 define('BASE_URL', '/');
+
+/** Tên hiển thị trên bảng xếp hạng (khách) */
+define('LEAGUE_DISPLAY_NAME', 'Giải bóng đá');
+/** Nhãn mùa giải (hiển thị; lọc theo mùa có thể bổ sung sau) */
+define('LEAGUE_SEASON_LABEL', '2025–26');
