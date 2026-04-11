@@ -1,0 +1,4 @@
+/* Bổ sung tùy chỉnh ngoài Bootstrap */
+.card-match:hover {
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08);
+}
