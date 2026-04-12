@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once dirname(__DIR__) . '/config/config.php';
 require_once dirname(__DIR__) . '/config/database.php';
 require_once dirname(__DIR__) . '/includes/auth.php';
+require_once dirname(__DIR__) . '/includes/lineup_visual.php';
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if ($id < 1) {
@@ -68,6 +69,8 @@ foreach ($allLineup as $row) {
         $lineupAway[] = $entry;
     }
 }
+
+[$pitchHome, $benchHome, $pitchAway, $benchAway] = lineupComputePitchSides($allLineup);
 
 $playerStmt = $pdo->prepare(<<<SQL
 SELECT PlayerId, FullName, ShirtNumber, Position, Nationality, DateOfBirth
@@ -149,7 +152,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
                 </button>
             </div>
         </div>
-        <p class="text-center small text-muted mb-3 mb-md-2">Nhấn vào tên câu lạc bộ để xem đội hình trận (trái) và chi tiết cầu thủ (phải).</p>
+        <p class="text-center small text-muted mb-3 mb-md-2">Chọn đội để xem bảng đội hình, sơ đồ sân và danh sách cầu thủ CLB.</p>
         <ul class="list-unstyled mb-0 small">
             <li><strong>Ngày giờ:</strong> <?= htmlspecialchars(date('d/m/Y H:i', strtotime((string) $match['MatchDateTime'])), ENT_QUOTES, 'UTF-8') ?></li>
             <li><strong>Trọng tài:</strong> <?= htmlspecialchars((string) ($match['RefereeName'] ?? '—'), ENT_QUOTES, 'UTF-8') ?></li>
@@ -160,7 +163,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
 </div>
 
 <div class="row g-3 match-detail-panels mb-4">
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white fw-semibold" id="lineup-panel-title">Đội hình</div>
             <div class="card-body p-0">
@@ -181,7 +184,20 @@ require_once dirname(__DIR__) . '/includes/header.php';
             </div>
         </div>
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white fw-semibold" id="guest-pitch-title">Sơ đồ đội hình</div>
+            <div class="card-body p-2">
+                <div class="guest-pitch-panel" id="guest-pitch-panel-home">
+                    <?= lineupRenderPitchMarkup($pitchHome, $benchHome, 'home', 'Sơ đồ đội nhà') ?>
+                </div>
+                <div class="guest-pitch-panel d-none" id="guest-pitch-panel-away">
+                    <?= lineupRenderPitchMarkup($pitchAway, $benchAway, 'away', 'Sơ đồ đội khách') ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white fw-semibold" id="squad-panel-title">Chi tiết cầu thủ</div>
             <div class="card-body p-0">
@@ -221,6 +237,9 @@ require_once dirname(__DIR__) . '/includes/header.php';
     const squadEmpty = document.getElementById('squad-panel-empty');
     const lineupTableWrap = document.getElementById('lineup-table-wrap');
     const squadTableWrap = document.getElementById('squad-table-wrap');
+    const guestPitchTitle = document.getElementById('guest-pitch-title');
+    const guestPitchHome = document.getElementById('guest-pitch-panel-home');
+    const guestPitchAway = document.getElementById('guest-pitch-panel-away');
 
     function esc(s) {
         return String(s)
@@ -245,6 +264,13 @@ require_once dirname(__DIR__) . '/includes/header.php';
 
         lineupTitle.textContent = 'Đội hình — ' + name;
         squadTitle.textContent = 'Chi tiết cầu thủ — ' + name;
+        if (guestPitchTitle) {
+            guestPitchTitle.textContent = 'Sơ đồ — ' + name;
+        }
+        if (guestPitchHome && guestPitchAway) {
+            guestPitchHome.classList.toggle('d-none', side !== 'home');
+            guestPitchAway.classList.toggle('d-none', side !== 'away');
+        }
 
         lineupBody.innerHTML = '';
         if (lineup.length === 0) {

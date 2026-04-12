@@ -23,197 +23,36 @@
 }
 
 .match-detail-panels {
-    min-height: 280px;
+    min-height: 320px;
 }
 
-/* —— Bảng xếp hạng (khách) —— */
-.standings-page-wrap {
-    --standings-bg: #12121a;
-    --standings-panel: #1c1c28;
-    --standings-border: #2a2a3d;
-    --standings-purple: #5b21b6;
-    --standings-purple-light: #7c3aed;
-    --standings-text: #f4f4f5;
-    --standings-muted: #a1a1aa;
+.guest-pitch-panel {
+    min-height: 12rem;
 }
 
-.standings-tabs-bar {
-    background: linear-gradient(180deg, #2d1b4e 0%, var(--standings-bg) 100%);
-    border-radius: 0.5rem 0.5rem 0 0;
-    border: 1px solid var(--standings-border);
-    border-bottom: none;
-    padding: 0.35rem 0.75rem 0;
-}
-
-.standings-tabs {
-    gap: 0.25rem;
-}
-
-.standings-tabs .nav-link {
-    color: var(--standings-muted);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    border: none;
-    border-radius: 0.25rem 0.25rem 0 0;
-    padding: 0.65rem 1rem;
-}
-
-.standings-tabs .nav-link:hover {
-    color: var(--standings-text);
-}
-
-.standings-tabs .nav-link.active {
-    color: var(--standings-text);
-    background: transparent;
-    box-shadow: inset 0 -2px 0 #fff;
-}
-
-.standings-shell {
-    background: var(--standings-panel);
-    color: var(--standings-text);
-    border-radius: 0 0 0.5rem 0.5rem;
-    border: 1px solid var(--standings-border);
-    border-top: 1px solid var(--standings-border);
-    overflow: hidden;
-}
-
-.standings-head {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    background: linear-gradient(90deg, var(--standings-purple) 0%, var(--standings-purple-light) 55%, #4c1d95 100%);
-}
-
-.standings-head-icon {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.35rem;
-    flex-shrink: 0;
-}
-
-.standings-head-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-}
-
-.standings-head-sub {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.82);
-    margin-top: 0.2rem;
-}
-
-.standings-toolbar {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1.25rem;
-    background: var(--standings-bg);
-    border-bottom: 1px solid var(--standings-border);
-}
-
-.standings-season-label {
-    font-size: 0.8rem;
-    color: var(--standings-muted);
-    margin: 0;
-}
-
-.standings-season-select {
-    max-width: 11rem;
-    background-color: var(--standings-panel);
-    color: var(--standings-text);
-    border-color: var(--standings-border);
-}
-
-.standings-table-wrap {
-    overflow-x: auto;
-}
-
-.standings-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.875rem;
-}
-
-.standings-table thead th {
-    text-align: center;
-    font-weight: 600;
-    font-size: 0.7rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--standings-muted);
-    padding: 0.65rem 0.4rem;
-    border-bottom: 1px solid var(--standings-border);
-    background: rgba(0, 0, 0, 0.25);
-}
-
-.standings-table thead th.col-club {
-    text-align: left;
-    padding-left: 1rem;
-}
-
-.standings-table tbody td {
-    padding: 0.65rem 0.4rem;
-    border-bottom: 1px solid var(--standings-border);
-    text-align: center;
-    vertical-align: middle;
-}
-
-.standings-table tbody tr:hover {
-    background: rgba(124, 58, 237, 0.08);
-}
-
-.standings-table .col-rank {
-    width: 2.5rem;
-    color: var(--standings-muted);
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-}
-
-.standings-table .col-club {
-    text-align: left;
-    min-width: 10rem;
-    padding-left: 1rem;
-}
-
-.standings-table .col-pts {
-    font-weight: 800;
-    font-size: 0.95rem;
-    color: #fff;
-    font-variant-numeric: tabular-nums;
-}
-
+/* —— Bảng xếp hạng (khách): logo + tên CLB —— */
 .standings-club-link {
     display: inline-flex;
     align-items: center;
     gap: 0.65rem;
-    color: var(--standings-text);
-    text-decoration: none;
 }
 
-.standings-club-link:hover {
-    color: #c4b5fd;
+.standings-club-link:hover .standings-club-name {
+    color: var(--bs-success);
 }
 
 .standings-crest {
     width: 2.25rem;
     height: 2.25rem;
     border-radius: 50%;
-    background: linear-gradient(145deg, #3f3f5a, #2a2a3d);
+    background: var(--bs-success-bg-subtle);
+    border: 1px solid rgba(var(--bs-success-rgb), 0.25);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-size: 0.85rem;
     font-weight: 700;
-    color: #e4e4e7;
+    color: var(--bs-success-text-emphasis);
     flex-shrink: 0;
 }
 
@@ -221,6 +60,7 @@
     padding: 0;
     overflow: hidden;
     background: #fff;
+    border-color: var(--bs-border-color);
 }
 
 .standings-crest--img img {
@@ -231,19 +71,168 @@
 
 .standings-club-name {
     font-weight: 600;
+    transition: color 0.15s ease;
 }
 
-.standings-empty {
-    padding: 1.25rem;
-    color: var(--standings-muted);
+/* —— Admin: đội hình & nhân sự (sân + vòng số áo) —— */
+.admin-lineup-header-away {
+    background: linear-gradient(90deg, #b91c1c 0%, #dc2626 100%);
 }
 
-.standings-foot {
-    padding: 0.85rem 1rem;
-    background: var(--standings-bg);
-    border-top: 1px solid var(--standings-border);
+.admin-personnel-table .admin-lineup-shirt {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.8rem;
 }
 
-.standings-foot-hint {
-    color: var(--standings-muted) !important;
+.admin-lineup-shirt {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    font-weight: 800;
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+    color: #fff;
+    flex-shrink: 0;
+    border: 2px solid #fff;
+    box-shadow: 0 0.1rem 0.35rem rgba(0, 0, 0, 0.2);
+    cursor: default;
+}
+
+.admin-lineup-shirt--home {
+    background: linear-gradient(145deg, #2563eb, #1d4ed8);
+}
+
+.admin-lineup-shirt--away {
+    background: linear-gradient(145deg, #dc2626, #991b1b);
+}
+
+.admin-lineup-pitch-wrap {
+    max-width: 280px;
+}
+
+.admin-lineup-pitch {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 68 / 105;
+    border-radius: 0.35rem;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.admin-lineup-pitch-field {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, #3fa653 0%, #2f8f42 42%, #267d38 100%);
+}
+
+.admin-lineup-pitch-field::before {
+    content: "";
+    position: absolute;
+    left: 7%;
+    right: 7%;
+    top: 50%;
+    height: 0;
+    border-top: 2px solid rgba(255, 255, 255, 0.5);
+    transform: translateY(-50%);
+}
+
+.admin-lineup-pitch-field::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 20%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    border-radius: 50%;
+}
+
+.admin-lineup-pitch-lines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.admin-lineup-pen {
+    position: absolute;
+    left: 18%;
+    right: 18%;
+    height: 18%;
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    border-bottom: none;
+}
+
+.admin-lineup-pen--top {
+    top: 0;
+}
+
+.admin-lineup-pen--bot {
+    bottom: 0;
+    border-top: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.45);
+}
+
+.admin-lineup-node {
+    position: absolute;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 4.25rem;
+    max-width: 28%;
+}
+
+.admin-lineup-node-figure {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.admin-lineup-node-figure .admin-lineup-shirt {
+    width: 2.35rem;
+    height: 2.35rem;
+    font-size: 0.72rem;
+}
+
+.admin-lineup-node-pos {
+    display: block;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
+    margin-bottom: 0.1rem;
+    line-height: 1.1;
+}
+
+.admin-lineup-node-name {
+    display: block;
+    margin-top: 0.12rem;
+    font-size: 0.52rem;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+    line-height: 1.15;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin-lineup-node--home .admin-lineup-shirt {
+    box-shadow: 0 0.12rem 0.4rem rgba(37, 99, 235, 0.45);
+}
+
+.admin-lineup-node--away .admin-lineup-shirt {
+    box-shadow: 0 0.12rem 0.4rem rgba(220, 38, 38, 0.45);
+}
+
+.admin-lineup-bench .admin-lineup-shirt {
+    width: 2.1rem;
+    height: 2.1rem;
+    font-size: 0.68rem;
 }

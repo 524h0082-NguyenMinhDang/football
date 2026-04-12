@@ -30,29 +30,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $shirt = $_POST['shirt_number'] === '' ? null : (int) $_POST['shirt_number'];
     $nat = trim((string) ($_POST['nationality'] ?? ''));
     $dob = trim((string) ($_POST['date_of_birth'] ?? ''));
+    $photoUrl = trim((string) ($_POST['photo_url'] ?? ''));
 
     if ($clubId < 1 || $fullName === '') {
         $error = 'Chọn CLB và nhập họ tên.';
     } else {
         $dobSql = $dob === '' ? null : $dob;
+        $photoSql = $photoUrl !== '' ? $photoUrl : null;
         if ($id > 0) {
-            $up = $pdo->prepare('UPDATE `Player` SET ClubId=?, FullName=?, Position=?, ShirtNumber=?, Nationality=?, DateOfBirth=? WHERE PlayerId=?');
+            $up = $pdo->prepare('UPDATE `Player` SET ClubId=?, FullName=?, Position=?, ShirtNumber=?, Nationality=?, DateOfBirth=?, PhotoUrl=? WHERE PlayerId=?');
             $up->execute([
                 $clubId, $fullName,
                 $position !== '' ? $position : null,
                 $shirt,
                 $nat !== '' ? $nat : null,
                 $dobSql,
+                $photoSql,
                 $id,
             ]);
         } else {
-            $ins = $pdo->prepare('INSERT INTO `Player` (ClubId, FullName, Position, ShirtNumber, Nationality, DateOfBirth) VALUES (?,?,?,?,?,?)');
+            $ins = $pdo->prepare('INSERT INTO `Player` (ClubId, FullName, Position, ShirtNumber, Nationality, DateOfBirth, PhotoUrl) VALUES (?,?,?,?,?,?,?)');
             $ins->execute([
                 $clubId, $fullName,
                 $position !== '' ? $position : null,
                 $shirt,
                 $nat !== '' ? $nat : null,
                 $dobSql,
+                $photoSql,
             ]);
         }
         header('Location: players.php');
@@ -105,6 +109,11 @@ require_once dirname(__DIR__) . '/includes/header.php';
     <div class="col-md-6">
         <label class="form-label" for="date_of_birth">Ngày sinh</label>
         <input type="date" name="date_of_birth" id="date_of_birth" class="form-control" value="<?= !empty($player['DateOfBirth']) ? htmlspecialchars(substr((string) $player['DateOfBirth'], 0, 10), ENT_QUOTES, 'UTF-8') : ($_POST['date_of_birth'] ?? '') ?>">
+    </div>
+    <div class="col-12">
+        <label class="form-label" for="photo_url">URL ảnh đại diện</label>
+        <input type="url" name="photo_url" id="photo_url" class="form-control" inputmode="url" placeholder="https://…" value="<?= htmlspecialchars((string) ($player['PhotoUrl'] ?? $_POST['photo_url'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+        <p class="form-text mb-0">Tùy chọn — hiển thị trên trang đội hình &amp; nhân sự (ảnh vuông, khuyến nghị tối thiểu 128×128 px).</p>
     </div>
     <div class="col-12">
         <button type="submit" class="btn btn-success">Lưu</button>
