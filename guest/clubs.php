@@ -19,11 +19,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
 
 <div class="standings-page-wrap mb-4">
     <div class="standings-tabs-bar">
-        <ul class="standings-tabs nav">
-            <li class="nav-item"><a class="nav-link" href="index.php">Trận đấu</a></li>
-            <li class="nav-item"><span class="nav-link active" aria-current="page">Bảng xếp hạng</span></li>
-            <li class="nav-item"><a class="nav-link" href="players.php">Số liệu thống kê</a></li>
-        </ul>
+
     </div>
 
     <div class="standings-shell">

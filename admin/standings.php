@@ -26,6 +26,10 @@ require_once dirname(__DIR__) . '/includes/header.php';
     </div>
 </div>
 
+<div class="alert alert-info py-2 mb-4">
+    Bảng <strong>tự tính</strong> từ mọi trận đã có đủ tỷ số (đội nhà &amp; đội khách). Thêm / sửa / xóa trận hoặc CLB ở menu tương ứng sẽ phản ánh ngay tại đây và trên trang khách.
+</div>
+
 <div class="table-responsive shadow-sm rounded border bg-white">
     <table class="table table-hover table-sm align-middle mb-0">
         <thead class="table-success">
