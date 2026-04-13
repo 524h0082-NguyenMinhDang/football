@@ -30,6 +30,58 @@
     min-height: 12rem;
 }
 
+/* —— Thống kê đội tuyển (khách) —— */
+.team-stats-logo {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.team-stats-logo--light {
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0.15rem 0.5rem rgba(0, 0, 0, 0.15);
+}
+
+.team-stats-logo--ph {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.team-stats-table tr:hover {
+    background: rgba(25, 135, 84, 0.06);
+}
+
+.team-stats-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 999px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+.team-stats-pill--home {
+    color: #0a58ca;
+    background: rgba(13, 110, 253, 0.12);
+    border: 1px solid rgba(13, 110, 253, 0.22);
+}
+
+.team-stats-pill--away {
+    color: #b02a37;
+    background: rgba(220, 53, 69, 0.12);
+    border: 1px solid rgba(220, 53, 69, 0.22);
+}
+
+@media (max-width: 576px) {
+    .team-stats-pill {
+        min-width: 2.75rem;
+        padding: 0.22rem 0.4rem;
+    }
+}
+
 /* —— Bảng xếp hạng (khách): logo + tên CLB —— */
 .standings-club-link {
     display: inline-flex;

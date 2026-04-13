@@ -72,8 +72,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $addTeam = 'home';
         }
         $isHome = $addTeam === 'home' ? 1 : 0;
-        $isStarter = isset($_POST['is_starter']) ? 1 : 0;
+        $role = (string) ($_POST['role'] ?? 'starter');
+        $isStarter = $role === 'bench' ? 0 : 1;
         $fieldPos = trim((string) ($_POST['field_position'] ?? ''));
+        if ($isStarter !== 1) {
+            $fieldPos = '';
+        }
         if ($pid > 0) {
             $mst = $pdo->prepare('SELECT HomeClubId, AwayClubId FROM `Match` WHERE MatchId = ?');
             $mst->execute([$mid]);
@@ -128,6 +132,12 @@ $assetsPrefix = '../';
 require_once dirname(__DIR__) . '/includes/header.php';
 
 $fieldPosOptions = ['GK', 'LB', 'LCB', 'CB', 'RCB', 'RB', 'LWB', 'RWB', 'CDM', 'LCDM', 'RCDM', 'DM', 'CM', 'LCM', 'RCM', 'CAM', 'LAM', 'RAM', 'LM', 'RM', 'LW', 'RW', 'ST', 'CF'];
+$fieldPosGroups = [
+    'Thủ môn' => ['GK'],
+    'Hậu vệ' => ['LB', 'LCB', 'CB', 'RCB', 'RB', 'LWB', 'RWB'],
+    'Tiền vệ' => ['CDM', 'LCDM', 'RCDM', 'DM', 'CM', 'LCM', 'RCM', 'CAM', 'LAM', 'RAM', 'LM', 'RM'],
+    'Tiền đạo' => ['LW', 'RW', 'ST', 'CF'],
+];
 ?>
 
 <h1 class="h3 mb-4">Đội hình &amp; nhân sự trận</h1>
@@ -154,12 +164,6 @@ $fieldPosOptions = ['GK', 'LB', 'LCB', 'CB', 'RCB', 'RB', 'LWB', 'RWB', 'CDM', '
     <p class="text-muted">Chưa có trận đấu. <a href="matches.php">Tạo trận</a> trước.</p>
 <?php else: ?>
 
-<datalist id="lineup-field-positions">
-    <?php foreach ($fieldPosOptions as $fp): ?>
-        <option value="<?= htmlspecialchars($fp, ENT_QUOTES, 'UTF-8') ?>"></option>
-    <?php endforeach; ?>
-</datalist>
-
 <div class="row g-4 mb-4">
     <div class="col-lg-5">
         <div class="card border-0 shadow-sm h-100">
@@ -185,15 +189,30 @@ $fieldPosOptions = ['GK', 'LB', 'LCB', 'CB', 'RCB', 'RB', 'LWB', 'RWB', 'CDM', '
                         </select>
                     </div>
                     <div class="col-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="is_starter" id="is_starter" checked>
-                            <label class="form-check-label small" for="is_starter">Đá chính</label>
+                        <label class="form-label small mb-1">Vai trò</label>
+                        <div class="btn-group w-100" role="group" aria-label="Vai trò cầu thủ">
+                            <input type="radio" class="btn-check" name="role" id="role_starter" value="starter" checked autocomplete="off">
+                            <label class="btn btn-outline-success btn-sm" for="role_starter">Đá chính</label>
+                            <input type="radio" class="btn-check" name="role" id="role_bench" value="bench" autocomplete="off">
+                            <label class="btn btn-outline-secondary btn-sm" for="role_bench">Dự bị</label>
                         </div>
                     </div>
                     <div class="col-12">
-                        <label class="form-label small mb-0" for="field_position">Vị trí trên sân (đá chính)</label>
-                        <input type="text" name="field_position" id="field_position" class="form-control form-control-sm" list="lineup-field-positions" placeholder="VD: ST, CDM, GK" autocomplete="off">
-                        <p class="form-text small mb-0">Gợi ý mã: <?= htmlspecialchars(implode(', ', array_slice($fieldPosOptions, 0, 8)), ENT_QUOTES, 'UTF-8') ?>, … — nhớ nhập <strong>số áo</strong> cho cầu thủ tại <a href="players.php">Cầu thủ</a> để hiển thị trên sơ đồ.</p>
+                        <div id="field-pos-block">
+                            <label class="form-label small mb-1">Vị trí trên sân (radio)</label>
+                            <?php foreach ($fieldPosGroups as $gName => $gList): ?>
+                                <div class="mb-2">
+                                    <div class="text-muted small fw-semibold mb-1"><?= htmlspecialchars($gName, ENT_QUOTES, 'UTF-8') ?></div>
+                                    <div class="d-flex flex-wrap gap-1">
+                                        <?php foreach ($gList as $fp): ?>
+                                            <input type="radio" class="btn-check" name="field_position" id="fp_<?= htmlspecialchars($fp, ENT_QUOTES, 'UTF-8') ?>" value="<?= htmlspecialchars($fp, ENT_QUOTES, 'UTF-8') ?>" autocomplete="off">
+                                            <label class="btn btn-outline-dark btn-sm" for="fp_<?= htmlspecialchars($fp, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($fp, ENT_QUOTES, 'UTF-8') ?></label>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                            <p class="form-text small mb-0">Chỉ chọn vị trí khi <strong>đá chính</strong>. Nhớ nhập <strong>số áo</strong> cho cầu thủ tại <a href="players.php">Cầu thủ</a> để hiển thị trên sơ đồ.</p>
+                        </div>
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-success btn-sm">Thêm</button>
@@ -203,16 +222,28 @@ $fieldPosOptions = ['GK', 'LB', 'LCB', 'CB', 'RCB', 'RB', 'LWB', 'RWB', 'CDM', '
         </div>
     </div>
     <div class="col-lg-7">
-        <div class="card border-0 shadow-sm bg-light h-100">
-            <div class="card-body small text-muted">
-                <p class="mb-2"><strong>Nhân sự</strong> liệt kê toàn bộ cầu thủ đã đăng ký; <strong>đội hình</strong> bên phải mô phỏng sân: chọn đội nhà hoặc khách ở trên thì cầu thủ thêm vào đúng sơ đồ đội đó.</p>
-                <p class="mb-0">Trên sơ đồ và danh sách nhân sự, mỗi cầu thủ được biểu diễn bằng <strong>vòng tròn số áo</strong> (nếu chưa có số áo sẽ hiện “—”).</p>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-primary text-white py-2 fw-semibold small">Sơ đồ — <?= htmlspecialchars((string) $current['HomeName'], ENT_QUOTES, 'UTF-8') ?></div>
+                    <div class="card-body p-2">
+                        <?= lineupRenderPitchMarkup($pitchHome, $benchHome, 'home', 'Sơ đồ đội nhà') ?>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header text-white py-2 fw-semibold small admin-lineup-header-away">Sơ đồ — <?= htmlspecialchars((string) $current['AwayName'], ENT_QUOTES, 'UTF-8') ?></div>
+                    <div class="card-body p-2">
+                        <?= lineupRenderPitchMarkup($pitchAway, $benchAway, 'away', 'Sơ đồ đội khách') ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<h2 class="h5 mb-3">Nhân sự đã đăng ký &amp; sơ đồ sân</h2>
+<h2 class="h5 mb-3">Nhân sự đã đăng ký</h2>
 <div class="row g-4">
     <div class="col-xl-5">
         <div class="row g-3">
@@ -314,26 +345,6 @@ $fieldPosOptions = ['GK', 'LB', 'LCB', 'CB', 'RCB', 'RB', 'LWB', 'RWB', 'CDM', '
             </div>
         </div>
     </div>
-    <div class="col-xl-7">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-header bg-primary text-white py-2 fw-semibold small">Sơ đồ — <?= htmlspecialchars((string) $current['HomeName'], ENT_QUOTES, 'UTF-8') ?></div>
-                    <div class="card-body p-2">
-                        <?= lineupRenderPitchMarkup($pitchHome, $benchHome, 'home', 'Sơ đồ đội nhà') ?>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-header text-white py-2 fw-semibold small admin-lineup-header-away">Sơ đồ — <?= htmlspecialchars((string) $current['AwayName'], ENT_QUOTES, 'UTF-8') ?></div>
-                    <div class="card-body p-2">
-                        <?= lineupRenderPitchMarkup($pitchAway, $benchAway, 'away', 'Sơ đồ đội khách') ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <?php
@@ -389,6 +400,24 @@ foreach ($awayPlayers as $p) {
         });
     });
     fillSelect(currentTeam());
+
+    var roleStarter = document.getElementById('role_starter');
+    var roleBench = document.getElementById('role_bench');
+    var fieldBlock = document.getElementById('field-pos-block');
+
+    function syncRole() {
+        if (!fieldBlock) return;
+        var isBench = roleBench && roleBench.checked;
+        fieldBlock.classList.toggle('opacity-50', isBench);
+        fieldBlock.querySelectorAll('input[name=\"field_position\"]').forEach(function (el) {
+            el.disabled = isBench;
+            if (isBench) el.checked = false;
+        });
+    }
+
+    if (roleStarter) roleStarter.addEventListener('change', syncRole);
+    if (roleBench) roleBench.addEventListener('change', syncRole);
+    syncRole();
 })();
 </script>
 

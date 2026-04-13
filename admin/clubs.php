@@ -25,10 +25,6 @@ require_once dirname(__DIR__) . '/includes/header.php';
     </div>
 </div>
 
-<div class="alert alert-light border mb-4 small">
-    Điểm trên <a href="standings.php">bảng xếp hạng</a> được tính tự động từ các trận đã có tỷ số. Cập nhật tỷ số tại <a href="matches.php">Trận đấu</a>.
-</div>
-
 <div class="table-responsive">
     <table class="table table-hover align-middle bg-white shadow-sm">
         <thead class="table-success">

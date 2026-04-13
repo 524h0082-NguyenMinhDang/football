@@ -9,6 +9,7 @@ CREATE DATABASE IF NOT EXISTS FootballLeague
 USE FootballLeague;
 
 SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS MatchTeamStat;
 DROP TABLE IF EXISTS MatchLineup;
 DROP TABLE IF EXISTS `Match`;
 DROP TABLE IF EXISTS Player;
@@ -71,6 +72,26 @@ CREATE TABLE MatchLineup (
     CONSTRAINT UQ_Match_Player UNIQUE (MatchId, PlayerId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE MatchTeamStat (
+    StatId          INT AUTO_INCREMENT PRIMARY KEY,
+    MatchId         INT NOT NULL,
+    IsHomeTeam      TINYINT(1) NOT NULL,
+    Shots           SMALLINT UNSIGNED NULL,
+    ShotsOnTarget   SMALLINT UNSIGNED NULL,
+    Possession      TINYINT UNSIGNED NULL,     -- 0..100
+    Passes          INT UNSIGNED NULL,
+    PassAccuracy    TINYINT UNSIGNED NULL,     -- 0..100
+    Fouls           SMALLINT UNSIGNED NULL,
+    YellowCards     SMALLINT UNSIGNED NULL,
+    RedCards        SMALLINT UNSIGNED NULL,
+    Offsides        SMALLINT UNSIGNED NULL,
+    Corners         SMALLINT UNSIGNED NULL,
+    UpdatedAt       DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    CONSTRAINT fk_stat_match FOREIGN KEY (MatchId) REFERENCES `Match`(MatchId) ON DELETE CASCADE,
+    CONSTRAINT UQ_Match_Team UNIQUE (MatchId, IsHomeTeam)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE INDEX IX_Player_ClubId ON Player(ClubId);
 CREATE INDEX IX_Match_Date ON `Match`(MatchDateTime);
 CREATE INDEX IX_MatchLineup_Match ON MatchLineup(MatchId);
+CREATE INDEX IX_Stat_Match ON MatchTeamStat(MatchId);

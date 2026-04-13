@@ -60,9 +60,4 @@ require_once dirname(__DIR__) . '/includes/header.php';
     </div>
 </div>
 
-<div class="alert alert-light border">
-    <strong>Gợi ý:</strong> Cập nhật trận đấu (tỷ số, trọng tài, giờ) tại <a href="matches.php">Trận đấu</a>.
-    Đội hình chính thức / nhân sự trận tại <a href="lineups.php">Đội hình trận</a>.
-</div>
-
 <?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>

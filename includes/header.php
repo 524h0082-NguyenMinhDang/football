@@ -32,7 +32,7 @@ $guestNavActive = $guestNavActive ?? '';
                 <?php if ($isGuestArea): ?>
                     <li class="nav-item"><a class="nav-link<?= $guestNavActive === 'matches' ? ' active' : '' ?>" href="index.php">Trận đấu</a></li>
                     <li class="nav-item"><a class="nav-link<?= $guestNavActive === 'standings' ? ' active' : '' ?>" href="clubs.php">Bảng xếp hạng</a></li>
-                    <li class="nav-item"><a class="nav-link<?= $guestNavActive === 'players' ? ' active' : '' ?>" href="players.php">Cầu thủ</a></li>
+                    <li class="nav-item"><a class="nav-link<?= $guestNavActive === 'stats' ? ' active' : '' ?>" href="stats.php">Thống kê đội tuyển</a></li>
                 <?php elseif ($isAdminArea && isAdminLoggedIn()): ?>
                     <li class="nav-item"><a class="nav-link" href="index.php">Bảng điều khiển</a></li>
                     <li class="nav-item"><a class="nav-link" href="matches.php">Trận đấu</a></li>
@@ -40,6 +40,7 @@ $guestNavActive = $guestNavActive ?? '';
                     <li class="nav-item"><a class="nav-link" href="clubs.php">CLB</a></li>
                     <li class="nav-item"><a class="nav-link" href="players.php">Cầu thủ</a></li>
                     <li class="nav-item"><a class="nav-link" href="lineups.php">Đội hình trận</a></li>
+                    <li class="nav-item"><a class="nav-link" href="stats.php">Thống kê đội tuyển</a></li>
                 <?php endif; ?>
             </ul>
             <?php if ($isAdminArea && isAdminLoggedIn()): ?>
