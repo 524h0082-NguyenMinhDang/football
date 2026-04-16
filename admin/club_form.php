@@ -26,29 +26,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $short = trim((string) ($_POST['short_name'] ?? ''));
     $stadium = trim((string) ($_POST['stadium'] ?? ''));
     $year = $_POST['founded_year'] === '' ? null : (int) $_POST['founded_year'];
-    $logo = trim((string) ($_POST['logo_url'] ?? ''));
-
     if ($name === '') {
         $error = 'Nhập tên CLB.';
     } else {
         if ($id > 0) {
-            $up = $pdo->prepare('UPDATE `Club` SET Name=?, ShortName=?, Stadium=?, FoundedYear=?, LogoUrl=? WHERE ClubId=?');
+            $up = $pdo->prepare('UPDATE `Club` SET Name=?, ShortName=?, Stadium=?, FoundedYear=? WHERE ClubId=?');
             $up->execute([
                 $name,
                 $short !== '' ? $short : null,
                 $stadium !== '' ? $stadium : null,
                 $year,
-                $logo !== '' ? $logo : null,
                 $id,
             ]);
         } else {
-            $ins = $pdo->prepare('INSERT INTO `Club` (Name, ShortName, Stadium, FoundedYear, LogoUrl) VALUES (?,?,?,?,?)');
+            $ins = $pdo->prepare('INSERT INTO `Club` (Name, ShortName, Stadium, FoundedYear) VALUES (?,?,?,?)');
             $ins->execute([
                 $name,
                 $short !== '' ? $short : null,
                 $stadium !== '' ? $stadium : null,
                 $year,
-                $logo !== '' ? $logo : null,
             ]);
         }
         header('Location: clubs.php');
@@ -86,10 +82,6 @@ require_once dirname(__DIR__) . '/includes/header.php';
     <div class="col-12">
         <label class="form-label" for="stadium">Sân nhà</label>
         <input type="text" name="stadium" id="stadium" class="form-control" value="<?= htmlspecialchars((string) ($club['Stadium'] ?? $_POST['stadium'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
-    </div>
-    <div class="col-12">
-        <label class="form-label" for="logo_url">URL logo</label>
-        <input type="url" name="logo_url" id="logo_url" class="form-control" placeholder="https://..." value="<?= htmlspecialchars((string) ($club['LogoUrl'] ?? $_POST['logo_url'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
     </div>
     <div class="col-12">
         <button type="submit" class="btn btn-success">Lưu</button>

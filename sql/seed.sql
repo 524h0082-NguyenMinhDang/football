@@ -1,13 +1,45 @@
-/* Dữ liệu mẫu — chạy sau schema.sql (tùy chọn) */
+/* Dữ liệu mẫu — chạy sau schema.sql (tùy chọn)
+   Đã gộp thêm:
+   - sql/add_match_team_stat.sql
+   - sql/admin_user.sql
+*/
 USE FootballLeague;
 
 /* TRUNCATE không dùng được cho bảng bị FK tham chiếu (#1701) — dùng DELETE */
 SET FOREIGN_KEY_CHECKS = 0;
 DELETE FROM MatchLineup;
+DELETE FROM MatchTeamStat;
 DELETE FROM `Match`;
 DELETE FROM Player;
 DELETE FROM Club;
+DELETE FROM AdminUser;
 SET FOREIGN_KEY_CHECKS = 1;
+
+CREATE TABLE IF NOT EXISTS MatchTeamStat (
+    StatId          INT AUTO_INCREMENT PRIMARY KEY,
+    MatchId         INT NOT NULL,
+    IsHomeTeam      TINYINT(1) NOT NULL,
+    Shots           SMALLINT UNSIGNED NULL,
+    ShotsOnTarget   SMALLINT UNSIGNED NULL,
+    Possession      TINYINT UNSIGNED NULL,
+    Passes          INT UNSIGNED NULL,
+    PassAccuracy    TINYINT UNSIGNED NULL,
+    Fouls           SMALLINT UNSIGNED NULL,
+    YellowCards     SMALLINT UNSIGNED NULL,
+    RedCards        SMALLINT UNSIGNED NULL,
+    Offsides        SMALLINT UNSIGNED NULL,
+    Corners         SMALLINT UNSIGNED NULL,
+    UpdatedAt       DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    CONSTRAINT fk_stat_match FOREIGN KEY (MatchId) REFERENCES `Match`(MatchId) ON DELETE CASCADE,
+    CONSTRAINT UQ_Match_Team UNIQUE (MatchId, IsHomeTeam)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE INDEX IF NOT EXISTS IX_Stat_Match ON MatchTeamStat(MatchId);
+
+INSERT INTO `AdminUser` (Username, PasswordHash) VALUES (
+  'admin',
+  '$2y$10$w4RoMlDtiiHH2LO.pexEGue6iRD6jFOJ1SjvDXg7EaU5nmNylNo7S'
+);
 
 INSERT INTO Club (ClubId, Name, ShortName, Stadium, FoundedYear, LogoUrl) VALUES
 (1, 'Câu lạc bộ A', 'CLA', 'Sân A', 1990, NULL),

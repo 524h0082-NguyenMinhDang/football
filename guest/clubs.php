@@ -18,7 +18,6 @@ require_once dirname(__DIR__) . '/includes/header.php';
 ?>
 
 <h1 class="h3 mb-2">Bảng xếp hạng <?= htmlspecialchars(LEAGUE_DISPLAY_NAME, ENT_QUOTES, 'UTF-8') ?></h1>
-<p class="text-muted small mb-4">Cập nhật theo tỷ số các trận đã ghi nhận · Điểm = 3×Thắng + 1×Hòa · HS = BT − SBT</p>
 
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-success text-white py-2 d-flex flex-wrap align-items-center justify-content-between gap-2">

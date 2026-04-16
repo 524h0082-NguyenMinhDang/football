@@ -27,33 +27,110 @@ function lineupSlotForPosition(?string $fieldPosition): ?array
     }
 
     static $map = [
-        'ST' => ['t' => 10.0, 'l' => 50.0],
-        'CF' => ['t' => 10.0, 'l' => 50.0],
-        'LW' => ['t' => 16.0, 'l' => 18.0],
-        'RW' => ['t' => 16.0, 'l' => 82.0],
-        'LM' => ['t' => 28.0, 'l' => 12.0],
-        'RM' => ['t' => 28.0, 'l' => 88.0],
-        'LAM' => ['t' => 24.0, 'l' => 28.0],
-        'RAM' => ['t' => 24.0, 'l' => 72.0],
-        'CAM' => ['t' => 32.0, 'l' => 50.0],
-        'LCM' => ['t' => 40.0, 'l' => 32.0],
-        'RCM' => ['t' => 40.0, 'l' => 68.0],
-        'CM' => ['t' => 40.0, 'l' => 50.0],
-        'LCDM' => ['t' => 48.0, 'l' => 35.0],
-        'RCDM' => ['t' => 48.0, 'l' => 65.0],
-        'CDM' => ['t' => 50.0, 'l' => 50.0],
-        'DM' => ['t' => 50.0, 'l' => 50.0],
-        'LWB' => ['t' => 58.0, 'l' => 10.0],
-        'RWB' => ['t' => 58.0, 'l' => 90.0],
-        'LB' => ['t' => 68.0, 'l' => 12.0],
-        'RB' => ['t' => 68.0, 'l' => 88.0],
-        'LCB' => ['t' => 72.0, 'l' => 35.0],
-        'RCB' => ['t' => 72.0, 'l' => 65.0],
-        'CB' => ['t' => 72.0, 'l' => 50.0],
-        'GK' => ['t' => 90.0, 'l' => 50.0],
+        'GK' => ['t' => 92.0, 'l' => 50.0],
+
+        'SW' => ['t' => 83.0, 'l' => 50.0],
+
+        'LB' => ['t' => 76.0, 'l' => 14.0],
+        'LCB' => ['t' => 76.0, 'l' => 36.0],
+        'CB' => ['t' => 76.0, 'l' => 50.0],
+        'RCB' => ['t' => 76.0, 'l' => 64.0],
+        'RB' => ['t' => 76.0, 'l' => 86.0],
+
+        'LWB' => ['t' => 66.0, 'l' => 12.0],
+        'RWB' => ['t' => 66.0, 'l' => 88.0],
+
+        'LDM' => ['t' => 58.0, 'l' => 36.0],
+        'LCDM' => ['t' => 58.0, 'l' => 36.0],
+        'CDM' => ['t' => 58.0, 'l' => 50.0],
+        'DM' => ['t' => 58.0, 'l' => 50.0],
+        'RDM' => ['t' => 58.0, 'l' => 64.0],
+        'RCDM' => ['t' => 58.0, 'l' => 64.0],
+
+        'LM' => ['t' => 50.0, 'l' => 18.0],
+        'LCM' => ['t' => 50.0, 'l' => 36.0],
+        'CM' => ['t' => 50.0, 'l' => 50.0],
+        'RCM' => ['t' => 50.0, 'l' => 64.0],
+        'RM' => ['t' => 50.0, 'l' => 82.0],
+
+        'LAM' => ['t' => 40.0, 'l' => 36.0],
+        'CAM' => ['t' => 40.0, 'l' => 50.0],
+        'RAM' => ['t' => 40.0, 'l' => 64.0],
+
+        'LW' => ['t' => 28.0, 'l' => 14.0],
+        'LF' => ['t' => 28.0, 'l' => 36.0],
+        'CF' => ['t' => 28.0, 'l' => 50.0],
+        'RF' => ['t' => 28.0, 'l' => 64.0],
+        'RW' => ['t' => 28.0, 'l' => 86.0],
+
+        'LS' => ['t' => 18.0, 'l' => 38.0],
+        'ST' => ['t' => 16.0, 'l' => 50.0],
+        'RS' => ['t' => 18.0, 'l' => 62.0],
     ];
 
     return $map[$k] ?? null;
+}
+
+/**
+ * Quy nhóm các vị trí trung tâm để khi bị trùng sẽ tách trái/phải theo sơ đồ.
+ */
+function lineupPositionFamily(?string $fieldPosition): ?string
+{
+    $k = lineupNormalizeFieldKey($fieldPosition);
+    if ($k === '') {
+        return null;
+    }
+
+    static $families = [
+        'CB' => 'CB', 'LCB' => 'CB', 'RCB' => 'CB', 'SW' => 'CB',
+        'CDM' => 'CDM', 'LCDM' => 'CDM', 'RCDM' => 'CDM', 'LDM' => 'CDM', 'RDM' => 'CDM', 'DM' => 'CDM',
+        'CM' => 'CM', 'LCM' => 'CM', 'RCM' => 'CM', 'LM' => 'CM', 'RM' => 'CM',
+        'CAM' => 'CAM', 'LAM' => 'CAM', 'RAM' => 'CAM',
+        'CF' => 'CF', 'LF' => 'CF', 'RF' => 'CF',
+        'ST' => 'ST', 'LS' => 'ST', 'RS' => 'ST',
+    ];
+
+    return $families[$k] ?? null;
+}
+
+/**
+ * Chuyển vị trí trung tâm sang biến thể trái/phải nếu có nhiều người trùng vị trí.
+ */
+function lineupResolveDuplicateCentralPosition(string $normalizedPosition, int $index, int $count): string
+{
+    $family = lineupPositionFamily($normalizedPosition);
+    if ($family === null || $count <= 1) {
+        return $normalizedPosition;
+    }
+
+    $patterns = [
+        'CB' => ['LCB', 'CB', 'RCB'],
+        'CDM' => ['LDM', 'CDM', 'RDM'],
+        'CM' => ['LCM', 'CM', 'RCM'],
+        'CAM' => ['LAM', 'CAM', 'RAM'],
+        'CF' => ['LF', 'CF', 'RF'],
+        'ST' => ['LS', 'ST', 'RS'],
+    ];
+    $slots = $patterns[$family] ?? [$normalizedPosition];
+    $slotCount = count($slots);
+
+    if ($count === 2 && $slotCount >= 2) {
+        return $family === 'ST'
+            ? ($index === 0 ? 'LS' : 'RS')
+            : ($index === 0 ? $slots[0] : $slots[$slotCount - 1]);
+    }
+
+    if ($count >= 3 && $slotCount >= 3) {
+        if ($index === 0) {
+            return $slots[0];
+        }
+        if ($index === $count - 1) {
+            return $slots[$slotCount - 1];
+        }
+        return $slots[1];
+    }
+
+    return $slots[min($index, $slotCount - 1)];
 }
 
 /**
@@ -66,27 +143,43 @@ function lineupAssignPitchCoordinates(array $starters): array
 {
     $placed = [];
     $unplaced = [];
-    $used = [];
+    $grouped = [];
 
     foreach ($starters as $s) {
         $fp = isset($s['FieldPosition']) && is_string($s['FieldPosition']) ? $s['FieldPosition'] : null;
-        $slot = lineupSlotForPosition($fp);
-        if ($slot === null) {
+        $norm = lineupNormalizeFieldKey($fp);
+        if ($norm === '' || lineupSlotForPosition($norm) === null) {
             $unplaced[] = $s;
             continue;
         }
-        $key = (string) round($slot['t']) . '_' . (string) round($slot['l']);
-        $dup = $used[$key] ?? 0;
-        $used[$key] = $dup + 1;
-        $t = $slot['t'];
-        $l = min(94.0, $slot['l'] + $dup * 6.0);
-        $placed[] = array_merge($s, ['pitchT' => $t, 'pitchL' => $l]);
+        $family = lineupPositionFamily($norm) ?? $norm;
+        if (!isset($grouped[$family])) {
+            $grouped[$family] = [];
+        }
+        $grouped[$family][] = ['row' => $s, 'norm' => $norm];
+    }
+
+    foreach ($grouped as $familyRows) {
+        $count = count($familyRows);
+        foreach ($familyRows as $i => $entry) {
+            $resolved = lineupResolveDuplicateCentralPosition($entry['norm'], $i, $count);
+            $slot = lineupSlotForPosition($resolved);
+            if ($slot === null) {
+                $unplaced[] = $entry['row'];
+                continue;
+            }
+            $placed[] = array_merge($entry['row'], [
+                'pitchT' => $slot['t'],
+                'pitchL' => $slot['l'],
+                'ResolvedFieldPosition' => $resolved,
+            ]);
+        }
     }
 
     $n = count($unplaced);
     foreach ($unplaced as $i => $s) {
         $l = $n <= 1 ? 50.0 : 18.0 + ($i / (float) max(1, $n - 1)) * 64.0;
-        $placed[] = array_merge($s, ['pitchT' => 56.0, 'pitchL' => $l]);
+        $placed[] = array_merge($s, ['pitchT' => 56.0, 'pitchL' => $l, 'ResolvedFieldPosition' => null]);
     }
 
     return $placed;
@@ -171,7 +264,12 @@ function lineupRenderPitchMarkup(array $pitchStarters, array $bench, string $tea
             </div>
             <?php foreach ($pitchStarters as $pl): ?>
                 <?php
-                $fp = $pl['FieldPosition'] !== null && $pl['FieldPosition'] !== '' ? (string) $pl['FieldPosition'] : '—';
+                $fp = '—';
+                if (isset($pl['ResolvedFieldPosition']) && is_string($pl['ResolvedFieldPosition']) && $pl['ResolvedFieldPosition'] !== '') {
+                    $fp = $pl['ResolvedFieldPosition'];
+                } elseif ($pl['FieldPosition'] !== null && $pl['FieldPosition'] !== '') {
+                    $fp = (string) $pl['FieldPosition'];
+                }
                 $t = (float) $pl['pitchT'];
                 $l = (float) $pl['pitchL'];
                 ?>

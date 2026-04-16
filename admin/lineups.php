@@ -134,9 +134,9 @@ require_once dirname(__DIR__) . '/includes/header.php';
 $fieldPosOptions = ['GK', 'LB', 'LCB', 'CB', 'RCB', 'RB', 'LWB', 'RWB', 'CDM', 'LCDM', 'RCDM', 'DM', 'CM', 'LCM', 'RCM', 'CAM', 'LAM', 'RAM', 'LM', 'RM', 'LW', 'RW', 'ST', 'CF'];
 $fieldPosGroups = [
     'Thủ môn' => ['GK'],
-    'Hậu vệ' => ['LB', 'LCB', 'CB', 'RCB', 'RB', 'LWB', 'RWB'],
-    'Tiền vệ' => ['CDM', 'LCDM', 'RCDM', 'DM', 'CM', 'LCM', 'RCM', 'CAM', 'LAM', 'RAM', 'LM', 'RM'],
-    'Tiền đạo' => ['LW', 'RW', 'ST', 'CF'],
+    'Hậu vệ' => ['LB', 'LCB', 'CB', 'SW', 'RCB', 'RB', 'LWB', 'RWB'],
+    'Tiền vệ' => ['LDM', 'CDM', 'RDM', 'LCDM', 'RCDM', 'DM', 'LM', 'LCM', 'CM', 'RCM', 'RM', 'LAM', 'CAM', 'RAM'],
+    'Tiền đạo' => ['LW', 'LF', 'CF', 'RF', 'RW', 'LS', 'ST', 'RS'],
 ];
 ?>
 
@@ -180,7 +180,6 @@ $fieldPosGroups = [
                             <input type="radio" class="btn-check" name="add_team" id="add_team_away" value="away" autocomplete="off">
                             <label class="btn btn-outline-danger btn-sm" for="add_team_away"><?= htmlspecialchars((string) $current['AwayName'], ENT_QUOTES, 'UTF-8') ?></label>
                         </div>
-                        <p class="form-text small mb-0 mt-1">Chỉ hiện cầu thủ của đội được chọn; sơ đồ tương ứng đội nhà (xanh) / đội khách (đỏ).</p>
                     </div>
                     <div class="col-12">
                         <label class="form-label small" for="add_player_id">Cầu thủ</label>
@@ -199,7 +198,7 @@ $fieldPosGroups = [
                     </div>
                     <div class="col-12">
                         <div id="field-pos-block">
-                            <label class="form-label small mb-1">Vị trí trên sân (radio)</label>
+                            <label class="form-label small mb-1">Vị trí trên sân</label>
                             <?php foreach ($fieldPosGroups as $gName => $gList): ?>
                                 <div class="mb-2">
                                     <div class="text-muted small fw-semibold mb-1"><?= htmlspecialchars($gName, ENT_QUOTES, 'UTF-8') ?></div>
@@ -211,7 +210,6 @@ $fieldPosGroups = [
                                     </div>
                                 </div>
                             <?php endforeach; ?>
-                            <p class="form-text small mb-0">Chỉ chọn vị trí khi <strong>đá chính</strong>. Nhớ nhập <strong>số áo</strong> cho cầu thủ tại <a href="players.php">Cầu thủ</a> để hiển thị trên sơ đồ.</p>
                         </div>
                     </div>
                     <div class="col-12">
