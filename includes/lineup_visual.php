@@ -191,7 +191,7 @@ function lineupAssignPitchCoordinates(array $starters): array
  * @param mixed $shirtNumber
  * @param string $teamSide 'home' | 'away' | ''
  */
-function lineupPlayerShirtBadgeHtml($shirtNumber, string $fullName, string $teamSide = ''): string
+function lineupPlayerShirtBadgeHtml($shirtNumber, string $fullName, string $teamSide = '', bool $isOut = false): string
 {
     $label = '—';
     if ($shirtNumber !== null && $shirtNumber !== '') {
@@ -203,7 +203,11 @@ function lineupPlayerShirtBadgeHtml($shirtNumber, string $fullName, string $team
     } elseif ($teamSide === 'away') {
         $classes .= ' admin-lineup-shirt--away';
     }
-    $title = htmlspecialchars($fullName . ($label !== '—' ? ' · #' . $label : ''), ENT_QUOTES, 'UTF-8');
+    if ($isOut) {
+        $classes .= ' admin-lineup-shirt--out';
+        $label = 'OUT';
+    }
+    $title = htmlspecialchars($fullName . ($shirtNumber !== null && $shirtNumber !== '' ? ' · #' . (string) (int) $shirtNumber : '') . ($isOut ? ' · OUT' : ''), ENT_QUOTES, 'UTF-8');
     $text = htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
 
     return '<span class="' . $classes . '" title="' . $title . '">' . $text . '</span>';
@@ -272,11 +276,15 @@ function lineupRenderPitchMarkup(array $pitchStarters, array $bench, string $tea
                 }
                 $t = (float) $pl['pitchT'];
                 $l = (float) $pl['pitchL'];
+                $nodeClass = 'admin-lineup-node--' . htmlspecialchars($side, ENT_QUOTES, 'UTF-8');
+                if (!empty($pl['is_out'])) {
+                    $nodeClass .= ' admin-lineup-node--out';
+                }
                 ?>
-                <div class="admin-lineup-node admin-lineup-node--<?= htmlspecialchars($side, ENT_QUOTES, 'UTF-8') ?>" style="top: <?= $t ?>%;left: <?= $l ?>%;">
+                <div class="admin-lineup-node <?= $nodeClass ?>" style="top: <?= $t ?>%;left: <?= $l ?>%;">
                     <span class="admin-lineup-node-pos"><?= htmlspecialchars($fp, ENT_QUOTES, 'UTF-8') ?></span>
                     <div class="admin-lineup-node-figure">
-                        <?= lineupPlayerShirtBadgeHtml($pl['ShirtNumber'] ?? null, (string) $pl['FullName'], $side) ?>
+                        <?= lineupPlayerShirtBadgeHtml($pl['ShirtNumber'] ?? null, (string) $pl['FullName'], $side, !empty($pl['is_out'])) ?>
                     </div>
                     <span class="admin-lineup-node-name"><?= htmlspecialchars((string) $pl['FullName'], ENT_QUOTES, 'UTF-8') ?></span>
                 </div>
@@ -287,8 +295,8 @@ function lineupRenderPitchMarkup(array $pitchStarters, array $bench, string $tea
         <p class="small text-muted mb-1 mt-2 fw-semibold">Dự bị</p>
         <div class="d-flex flex-wrap gap-2 admin-lineup-bench">
             <?php foreach ($bench as $pl): ?>
-                <div class="admin-lineup-bench-item admin-lineup-bench-item--<?= htmlspecialchars($side, ENT_QUOTES, 'UTF-8') ?> text-center">
-                    <?= lineupPlayerShirtBadgeHtml($pl['ShirtNumber'] ?? null, (string) $pl['FullName'], $side) ?>
+                <div class="admin-lineup-bench-item admin-lineup-bench-item--<?= htmlspecialchars($side, ENT_QUOTES, 'UTF-8') ?> <?= !empty($pl['is_out']) ? 'admin-lineup-node--out' : '' ?> text-center">
+                    <?= lineupPlayerShirtBadgeHtml($pl['ShirtNumber'] ?? null, (string) $pl['FullName'], $side, !empty($pl['is_out'])) ?>
                 </div>
             <?php endforeach; ?>
         </div>

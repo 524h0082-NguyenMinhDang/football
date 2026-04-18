@@ -5,11 +5,11 @@ declare(strict_types=1);
  * Tính bảng xếp hạng từ các trận đã có tỷ số (HomeScore & AwayScore không null).
  * Điểm: thắng 3, hòa 1, thua 0. Sắp xếp: điểm → hiệu số → bàn thắng → tên CLB.
  *
- * @return list<array{clubId:int,name:string,shortName:?string,logoUrl:?string,played:int,won:int,drawn:int,lost:int,gf:int,ga:int,gd:int,pts:int,rank:int}>
+ * @return list<array{clubId:int,name:string,shortName:?string,played:int,won:int,drawn:int,lost:int,gf:int,ga:int,gd:int,pts:int,rank:int}>
  */
 function getLeagueStandings(PDO $pdo): array
 {
-    $clubs = $pdo->query('SELECT ClubId, Name, ShortName, LogoUrl FROM `Club` ORDER BY Name')->fetchAll();
+    $clubs = $pdo->query('SELECT ClubId, Name, ShortName FROM `Club` ORDER BY Name')->fetchAll();
     $stats = [];
     foreach ($clubs as $c) {
         $id = (int) $c['ClubId'];
@@ -17,7 +17,6 @@ function getLeagueStandings(PDO $pdo): array
             'clubId' => $id,
             'name' => (string) $c['Name'],
             'shortName' => $c['ShortName'] !== null && $c['ShortName'] !== '' ? (string) $c['ShortName'] : null,
-            'logoUrl' => $c['LogoUrl'] !== null && $c['LogoUrl'] !== '' ? (string) $c['LogoUrl'] : null,
             'played' => 0,
             'won' => 0,
             'drawn' => 0,

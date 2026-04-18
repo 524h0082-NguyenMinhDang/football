@@ -283,6 +283,24 @@
     box-shadow: 0 0.12rem 0.4rem rgba(220, 38, 38, 0.45);
 }
 
+.admin-lineup-node--out {
+    opacity: 0.35;
+    filter: grayscale(1) saturate(0);
+}
+
+.admin-lineup-shirt--out,
+.admin-lineup-node--out .admin-lineup-shirt {
+    background: linear-gradient(145deg, #9ca3af, #6b7280) !important;
+    box-shadow: none !important;
+    border-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.admin-lineup-node--out .admin-lineup-node-pos,
+.admin-lineup-node--out .admin-lineup-node-name {
+    color: rgba(255, 255, 255, 0.82);
+    text-shadow: none;
+}
+
 .admin-lineup-bench .admin-lineup-shirt {
     width: 2.1rem;
     height: 2.1rem;

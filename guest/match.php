@@ -72,6 +72,41 @@ foreach ($allLineup as $row) {
 
 [$pitchHome, $benchHome, $pitchAway, $benchAway] = lineupComputePitchSides($allLineup);
 
+$cardStmt = $pdo->prepare(<<<SQL
+SELECT PlayerId,
+       SUM(CASE WHEN EventType='Card' AND CardType='Yellow' THEN 1 ELSE 0 END) AS YellowCount,
+       SUM(CASE WHEN EventType='Card' AND CardType='Red' THEN 1 ELSE 0 END) AS RedCount
+FROM MatchEvent
+WHERE MatchId = ?
+GROUP BY PlayerId
+SQL);
+$cardStmt->execute([$id]);
+$playerCardCounts = [];
+foreach ($cardStmt->fetchAll() as $row) {
+    $playerCardCounts[(int) $row['PlayerId']] = [
+        'yellow' => (int) ($row['YellowCount'] ?? 0),
+        'red' => (int) ($row['RedCount'] ?? 0),
+    ];
+}
+
+$markOut = static function (array $rows) use ($playerCardCounts): array {
+    $out = [];
+    foreach ($rows as $r) {
+        $pid = (int) ($r['playerId'] ?? $r['PlayerId'] ?? 0);
+        $yellow = (int) ($playerCardCounts[$pid]['yellow'] ?? 0);
+        $red = (int) ($playerCardCounts[$pid]['red'] ?? 0);
+        $isOut = $yellow >= 2 || $red >= 1;
+        $r['is_out'] = $isOut;
+        $out[] = $r;
+    }
+    return $out;
+};
+
+$pitchHome = $markOut($pitchHome);
+$benchHome = $markOut($benchHome);
+$pitchAway = $markOut($pitchAway);
+$benchAway = $markOut($benchAway);
+
 $playerStmt = $pdo->prepare(<<<SQL
 SELECT PlayerId, FullName, ShirtNumber, Position, Nationality, DateOfBirth
 FROM `Player`
