@@ -13,8 +13,7 @@ $guestNavActive = 'stats';
 $pdo = getPdo();
 
 $matches = $pdo->query(<<<SQL
-SELECT m.MatchId, m.MatchDateTime, hc.Name AS HomeName, ac.Name AS AwayName,
-       hc.LogoUrl AS HomeLogo, ac.LogoUrl AS AwayLogo
+SELECT m.MatchId, m.MatchDateTime, hc.Name AS HomeName, ac.Name AS AwayName
 FROM `Match` m
 JOIN `Club` hc ON m.HomeClubId = hc.ClubId
 JOIN `Club` ac ON m.AwayClubId = ac.ClubId
@@ -98,11 +97,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
         <div class="card-header bg-success text-white">
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
                 <div class="d-flex align-items-center gap-2 min-w-0">
-                    <?php if (!empty($current['HomeLogo'])): ?>
-                        <img class="team-stats-logo team-stats-logo--light" src="<?= htmlspecialchars((string) $current['HomeLogo'], ENT_QUOTES, 'UTF-8') ?>" alt="">
-                    <?php else: ?>
-                        <div class="team-stats-logo team-stats-logo--light team-stats-logo--ph" aria-hidden="true"></div>
-                    <?php endif; ?>
+                    <div class="team-stats-logo team-stats-logo--light team-stats-logo--ph" aria-hidden="true"></div>
                     <span class="fw-semibold text-truncate"><?= htmlspecialchars((string) $current['HomeName'], ENT_QUOTES, 'UTF-8') ?></span>
                 </div>
                 <div class="text-center flex-grow-1 d-none d-md-block">
@@ -111,11 +106,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
                 </div>
                 <div class="d-flex align-items-center gap-2 justify-content-end min-w-0">
                     <span class="fw-semibold text-truncate"><?= htmlspecialchars((string) $current['AwayName'], ENT_QUOTES, 'UTF-8') ?></span>
-                    <?php if (!empty($current['AwayLogo'])): ?>
-                        <img class="team-stats-logo team-stats-logo--light" src="<?= htmlspecialchars((string) $current['AwayLogo'], ENT_QUOTES, 'UTF-8') ?>" alt="">
-                    <?php else: ?>
-                        <div class="team-stats-logo team-stats-logo--light team-stats-logo--ph" aria-hidden="true"></div>
-                    <?php endif; ?>
+                    <div class="team-stats-logo team-stats-logo--light team-stats-logo--ph" aria-hidden="true"></div>
                 </div>
             </div>
         </div>

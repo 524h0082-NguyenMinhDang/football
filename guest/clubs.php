@@ -54,13 +54,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
                         <td class="text-center text-muted fw-semibold"><?= (int) $row['rank'] ?></td>
                         <td>
                             <a class="standings-club-link text-decoration-none text-body" href="club.php?id=<?= (int) $row['clubId'] ?>">
-                                <?php if ($row['logoUrl']): ?>
-                                    <span class="standings-crest standings-crest--img">
-                                        <img src="<?= htmlspecialchars($row['logoUrl'], ENT_QUOTES, 'UTF-8') ?>" alt="" width="36" height="36" loading="lazy">
-                                    </span>
-                                <?php else: ?>
-                                    <span class="standings-crest"><?= htmlspecialchars($initial, ENT_QUOTES, 'UTF-8') ?></span>
-                                <?php endif; ?>
+                                <span class="standings-crest"><?= htmlspecialchars($initial, ENT_QUOTES, 'UTF-8') ?></span>
                                 <span class="standings-club-name"><?= htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') ?></span>
                             </a>
                         </td>

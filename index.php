@@ -17,7 +17,7 @@ require_once __DIR__ . '/config/config.php';
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
             <div class="text-center mb-5">
-                <h1 class="display-5 fw-bold text-success">Hệ thống quản lý giải bóng đá</h1>
+                <h1 class="display-5 fw-bold text-success">Football League Management Software</h1>
             </div>
             <div class="row g-4">
                 <div class="col-md-6">
