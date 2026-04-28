@@ -25,6 +25,16 @@ require_once dirname(__DIR__) . '/includes/header.php';
     </div>
 </div>
 
+<?php if (isset($_SESSION['flash_error'])): ?>
+    <div class="alert alert-danger py-2"><?= htmlspecialchars($_SESSION['flash_error'], ENT_QUOTES, 'UTF-8') ?></div>
+    <?php unset($_SESSION['flash_error']); ?>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['flash_success'])): ?>
+    <div class="alert alert-success py-2"><?= htmlspecialchars($_SESSION['flash_success'], ENT_QUOTES, 'UTF-8') ?></div>
+    <?php unset($_SESSION['flash_success']); ?>
+<?php endif; ?>
+
 <div class="table-responsive">
     <table class="table table-hover align-middle bg-white shadow-sm">
         <thead class="table-success">
@@ -45,7 +55,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
                     <td><?= $r['FoundedYear'] !== null ? (int) $r['FoundedYear'] : '—' ?></td>
                     <td class="text-end">
                         <a class="btn btn-sm btn-outline-primary" href="club_form.php?id=<?= (int) $r['ClubId'] ?>">Sửa</a>
-                        <form class="d-inline" method="post" action="club_delete.php" onsubmit="return confirm('Xóa CLB và toàn bộ cầu thủ thuộc CLB?');">
+                        <form class="d-inline" method="post" action="club_delete.php" onsubmit="return confirm('Xóa CLB này?');">
                             <input type="hidden" name="id" value="<?= (int) $r['ClubId'] ?>">
                             <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
                         </form>

@@ -28,6 +28,16 @@ require_once dirname(__DIR__) . '/includes/header.php';
     <a href="player_form.php" class="btn btn-success">+ Thêm cầu thủ</a>
 </div>
 
+<?php if (isset($_SESSION['flash_error'])): ?>
+    <div class="alert alert-danger py-2"><?= htmlspecialchars($_SESSION['flash_error'], ENT_QUOTES, 'UTF-8') ?></div>
+    <?php unset($_SESSION['flash_error']); ?>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['flash_success'])): ?>
+    <div class="alert alert-success py-2"><?= htmlspecialchars($_SESSION['flash_success'], ENT_QUOTES, 'UTF-8') ?></div>
+    <?php unset($_SESSION['flash_success']); ?>
+<?php endif; ?>
+
 <div class="table-responsive">
     <table class="table table-hover align-middle bg-white shadow-sm small">
         <thead class="table-success">
